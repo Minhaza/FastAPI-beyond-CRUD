@@ -33,10 +33,11 @@ class BookService:
     
     async def update_book_by_id(self, book_id: str, book_data: BookUpdateModel, session: AsyncSession):
         book_update = await self.get_book_by_id(book_id, session)
-        update_data_dict = book_data.model_dump()
         
         if book_update is None:
             return None
+        
+        update_data_dict = book_data.model_dump()
         
         for k, v in update_data_dict.items():
             setattr(book_update, k, v)
