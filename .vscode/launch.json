@@ -1,0 +1,20 @@
+
+{
+    "version": "0.2.0",
+    "configurations": [
+      {
+        "name": "Python: FastAPI",
+        "type": "debugpy",
+        "request": "launch",
+        // "program": "${workspaceFolder}/main.py",
+        "module": "uvicorn", 
+        "envFile": "${workspaceFolder}/.env",
+        "args": [
+          "main:app",
+          "--reload"
+        ],
+        "console": "integratedTerminal"
+      }
+    ]
+  }
+  
