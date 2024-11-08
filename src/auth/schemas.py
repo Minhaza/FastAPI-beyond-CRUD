@@ -4,6 +4,7 @@ import uuid
 from pydantic import BaseModel, Field
 
 from src.db.models import Book
+from src.reviews.schemas import ReviewModel
 
 
 class UserModel(BaseModel):
@@ -53,3 +54,4 @@ class UserLoginModel(BaseModel):
     
 class UserBookModel(UserModel):
     book: List[Book]
+    review: List[ReviewModel]
