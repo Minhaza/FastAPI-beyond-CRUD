@@ -3,7 +3,7 @@ from typing import List
 import uuid
 from pydantic import BaseModel, Field
 
-from src.books.models import Book
+from src.db.models import Book
 
 
 class UserModel(BaseModel):

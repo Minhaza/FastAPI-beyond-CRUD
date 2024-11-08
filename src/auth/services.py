@@ -2,7 +2,7 @@ from sqlmodel.ext.asyncio.session import AsyncSession
 from sqlmodel import select
 from .utils import generate_password_hash
 from src.auth.schemas import UserCreateModel
-from .models import User
+from src.db import User
 
 class UserService:
     async def is_user_exist(self, email: str, session:AsyncSession):

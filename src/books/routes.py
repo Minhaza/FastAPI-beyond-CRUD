@@ -3,7 +3,7 @@ from fastapi import APIRouter, HTTPException, status, Depends
 from sqlmodel.ext.asyncio.session import AsyncSession
 
 from src.auth.dependencies import AccessTokenBearer, RoleChecker, TokenBearer
-from src.books.models import Book
+from src.db.models import Book
 from .schemas import BookModel, BookUpdateModel, BookCreateModel
 from .services import BookService
 from src.db.main import get_session

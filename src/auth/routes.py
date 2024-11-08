@@ -4,7 +4,6 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.responses import JSONResponse
 from sqlmodel.ext.asyncio.session import AsyncSession
 from src.auth.dependencies import AccessTokenBearer, RefreshTokenBearer, RoleChecker, get_current_user
-from src.auth.models import User
 from src.auth.schemas import UserBookModel, UserCreateModel, UserLoginModel, UserModel
 from src.auth.services import UserService
 from src.auth.utils import create_access_token, verify_password
