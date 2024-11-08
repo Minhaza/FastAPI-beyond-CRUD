@@ -2,7 +2,7 @@ from typing import List
 from fastapi import APIRouter, HTTPException, status, Depends
 from sqlmodel.ext.asyncio.session import AsyncSession
 
-from src.auth.dependencies import AccessTokenBearer, TokenBearer
+from src.auth.dependencies import AccessTokenBearer, RoleChecker, TokenBearer
 from src.books.models import Book
 from .schemas import BookModel, BookUpdateModel, BookCreateModel
 from .services import BookService
@@ -12,8 +12,9 @@ from src.db.main import get_session
 book_router = APIRouter()
 book_service = BookService()
 access_token_bearer = AccessTokenBearer()
+role_checker = Depends(RoleChecker(["admin"]))
 
-@book_router.get("/", status_code=status.HTTP_200_OK, response_model= List[Book])
+@book_router.get("/", status_code=status.HTTP_200_OK, response_model= List[Book], dependencies=[role_checker])
 async def get_all_books(session:AsyncSession = Depends(get_session), 
                         user_details = Depends(access_token_bearer)):
     print(user_details)
@@ -22,7 +23,7 @@ async def get_all_books(session:AsyncSession = Depends(get_session),
     return books
 
 
-@book_router.get("/{book_id}", status_code=status.HTTP_200_OK, response_model=Book)
+@book_router.get("/{book_id}", status_code=status.HTTP_200_OK, response_model=Book, dependencies=[role_checker])
 async def get_book_by_id(book_id: str, 
                          session:AsyncSession = Depends(get_session), 
                          user_details = Depends(access_token_bearer)) -> dict:
@@ -35,7 +36,7 @@ async def get_book_by_id(book_id: str,
     return book
 
 
-@book_router.post("/", status_code=status.HTTP_201_CREATED, response_model=Book)
+@book_router.post("/", status_code=status.HTTP_201_CREATED, response_model=Book, dependencies=[role_checker])
 async def create_book(book_data: BookCreateModel, 
                       session:AsyncSession = Depends(get_session), 
                       user_details = Depends(access_token_bearer)) -> dict:
@@ -44,7 +45,7 @@ async def create_book(book_data: BookCreateModel,
     return new_book
 
 
-@book_router.patch("/{book_id}", status_code=status.HTTP_200_OK, response_model=Book)
+@book_router.patch("/{book_id}", status_code=status.HTTP_200_OK, response_model=Book, dependencies=[role_checker])
 async def update_book_by_id(book_id: str, book_update_data: BookUpdateModel, 
                             session:AsyncSession = Depends(get_session), 
                             user_details = Depends(access_token_bearer)) -> dict:
@@ -56,7 +57,7 @@ async def update_book_by_id(book_id: str, book_update_data: BookUpdateModel,
     return updated_book
 
 
-@book_router.delete("/{book_id}", status_code=status.HTTP_204_NO_CONTENT)
+@book_router.delete("/{book_id}", status_code=status.HTTP_204_NO_CONTENT, dependencies=[role_checker])
 async def delete_book_by_id(book_id: str, 
                             session:AsyncSession = Depends(get_session), 
                             user_details = Depends(access_token_bearer)):
